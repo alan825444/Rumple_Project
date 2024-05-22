@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --vol-thumb-appearance: none;
+            --vol-thumb-width: 25px;
+            --vol-thumb-height: 20px;
+            --vol-thumb-background-color: black;
+            --vol-thumb-border-radius: 5px;
+
+
+            --progress-appearance: none;
+            --progress-width: 5px;
+            --progress-height: 5px;
+            --progress-background-color: rgb(197, 7, 0);
+            --progress-border-radius: 50%;
+            --progress-transition: 0.5s;
+            --progress-hover-width: 15px;
+            --progress-hover-height: 15px;
+        }
+
+
+
+        #controlPanel {
+            width: 730px;
+            border: 5px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            margin: auto;
+
+            background-image: url(images/logo.png);
+            background-repeat: no-repeat;
+            background-size: 13%;
+            background-position: bottom right;
+            /* background-attachment: fixed; */
+
+        }
+
+        #controlPanel>span {
+            cursor: pointer;
+            border: 2px solid black;
+            padding: 5px;
+            box-shadow: 2px 2px 3px black;
+            font-family: webdings;
+            font-size: 3rem;
+        }
+
+        #volController {
+            cursor: pointer;
+        }
+
+        #volController>input[type="range"] {
+            appearance: none;
+            width: 85%;
+            height: 5px;
+            border: 1px solid gray;
+        }
+
+        #volController>input[type="range"]::-webkit-slider-thumb {
+            appearance: var(--vol-thumb-apperance);
+            background-color: var(--vol-thumb-background-color);
+            width: var(--vol-thumb-width);
+            height: var(--vol-thumb-height);
+            border-radius: var(--vol-thumb-border-radius);
+        }
+
+        #volController>input[type="range"]::-moz-range-thumb {
+            appearance: var(--vol-thumb-apperance);
+            background-color: var(--vol-thumb-background-color);
+            width: var(--vol-thumb-width);
+            height: var(--vol-thumb-height);
+            border-radius: var(--vol-thumb-border-radius);
+        }
+
+        #volController>input[type="button"] {
+            border-radius: 50%;
+            border: 0;
+            box-shadow: 0 0 1px black;
+        }
+
+        #volController>input[type="text"] {
+            width: 25px;
+            border: 0;
+            background-color: black;
+            color: yellow;
+            text-align: center;
+        }
+
+        #progressBar {
+            appearance: none;
+            width: 100%;
+            height: 5px;
+            background-color: rgb(236, 236, 234);
+            margin-bottom: 20px;
+        }
+
+        #progressBar::-webkit-slider-thumb {
+            appearance: var(--progress-appearance);
+            background-color: var(--progress-background-color);
+            width: var(--progress-width);
+            height: var(--progress-height);
+        }
+
+        #progressBar::-webkit-slider-thumb:hover {
+            width: var(--progress-hover-width);
+            height: var(--progress-hover-height);
+            border-radius: var(--progress-border-radius);
+            transition: var(--progress-transition);
+        }
+
+        #progressBar::-moz-range-thumb {
+            appearance: var(--progress-appearance);
+            background-color: var(--progress-background-color);
+            width: var(--progress-width);
+            height: var(--progress-height);
+        }
+
+        #progressBar::-moz-range-thumb:hover {
+            width: var(--progress-hover-width);
+            height: var(--progress-hover-height);
+            border-radius: var(--progress-border-radius);
+            transition: var(--progress-transition);
+        }
+
+        #info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #musicPool {
+            width: 100%;
+            font-size: 16pt;
+            text-align: center;
+            background-color: rgb(217, 233, 228);
+            font-weight: 900;
+        }
+
+
+        .btnBColor {
+            background-color: bisque;
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="audio" src="music/nothing.mp3" controls title="Nothing Ganna Change My Love For You"></audio>
+    <hr>
+    <div id="controlPanel">
+        <select id="musicPool" onchange="changeMusic(0)">
+            <option value="music/nothing.mp3">Nothing Ganna Change My Love For You</option>
+            <option value="music/airball.mp3">周杰倫-告白汽球</option>
+            <option value="music/elysees.mp3">Elysees</option>
+            <option value="music/moon.mp3">五月天-私奔到月球</option>
+            <option value="music/travel.mp3">校長-帶你去旅行</option>
+        </select>
+        <hr>
+        <span id="play" onclick="playMusic();">4</span>
+        <span onclick="stopMusic()">&lt;</span>
+        <!--  <span onclick="pauseMusic()">;</span> -->
+        <span onclick="changeMusic(-1)">9</span>
+        <span onclick="changeTime(-5)">7</span>
+        <span onclick="changeTime(5)">8</span>
+        <span onclick="changeMusic(1)">:</span>
+        <span onclick="setMuted()">V</span>
+        <span onclick="setLoop()">q</span>
+        <span onclick="setRandom()">s</span>
+        <span onclick="">`</span>
+        <span onclick="">@</span>
+        <hr>
+        <input type="range" id="progressBar" value="0" oninput="setProgress()">
+        <div id="volController">
+            <input type="range" value="100" oninput="setVolumeByRangBar()">
+            <input type="button" value="-" onclick="setVolumeByButton(-1)">
+            <input type="button" value="+" onclick="setVolumeByButton(1)">
+            <input type="text" value="100" readonly>
+        </div>
+        <div id="info">
+            <div>請按下播放鈕</div>
+            <div>00:00 / 00:00</div>
+            <div>正常</div>
+        </div>
+    </div>
+
+
+    <script>
+        var audio = document.getElementById("audio");
+        var play = document.getElementById("play");
+
+        var volController = document.getElementById("volController");
+        var volValue = volController.children[3];
+        var rangeBar = volController.children[0];
+
+        var progressBar = document.getElementById("progressBar");
+
+        var info = document.getElementById("info");
+        var musicPool = document.getElementById("musicPool");
+
+        //執行初始設定的function
+        setVolumeByRangBar(); //設定初始音量
+
+
+        //啟動隨機播放狀態
+        function setRandom() {
+
+            event.target.className = info.children[2].innerText != "隨機播放" ? "btnBColor" : "";
+            info.children[2].innerText = info.children[2].innerText != "隨機播放" ? "隨機播放" : "正常";
+            controlPanel.children[9].className = "";
+        }
+
+
+        //啟動單曲循環狀態
+        function setLoop() {
+            //alert('啟動單曲循');
+            audio.loop = !audio.loop;
+            event.target.className = audio.loop ? "btnBColor" : "";
+            info.children[2].innerText = audio.loop ? "單曲循環" : "正常";
+            controlPanel.children[10].className = "";
+        }
+
+
+        //換歌時,若播放器狀態為播放中,則直接播放,若播放器狀態為非播放中,則暫不播放
+        //換歌時會有進度點錯誤
+
+
+        function getMusicStatus() {
+            if (audio.currentTime == audio.duration) {
+                if (info.children[2].innerText == "隨機播放") {
+                    //隨機選一首歌來播
+                    var r = Math.floor(Math.random() * musicPool.children.length);
+                    r -= musicPool.selectedIndex;
+                    changeMusic(r);
+                }
+                else if (info.children[2].innerText == "單曲循環"){
+                    changeMusic(0);
+                }
+                else
+                    changeMusic(1);
+            }
+            console.log(audio.loop);
+        }
+
+        //換歌
+        function changeMusic(n) {
+            //console.log(musicPool.selectedIndex);
+
+            var i = musicPool.selectedIndex + n;
+            audio.src = musicPool.children[i].value;
+            audio.title = musicPool.children[i].innerText;
+            musicPool.children[i].selected = true;
+
+            stopMusic();
+            playMusic();
+
+        }
+
+
+        //時間格式
+        function getTimeFormat(t) {
+
+            var m = parseInt(t / 60);
+            var s = parseInt(t) % 60;
+
+            m = m < 10 ? "0" + m : m;
+            s = s < 10 ? "0" + s : s;
+
+            return m + ":" + s;
+        }
+
+
+        //取得時間在資訊看板中顯示
+        function getTimerForInfo() {
+            info.children[1].innerText = getTimeFormat(audio.currentTime) + "/" + getTimeFormat(audio.duration);
+
+        }
+
+
+
+        //從進度條改變歌曲時間位置
+        function setProgress() {
+            //console.log(progressBar.value);
+            audio.currentTime = progressBar.value / 10000;
+        }
+
+        //取得進度條資訊
+        function getProgress() {
+            //console.log(parseInt(audio.currentTime));
+            var w = audio.currentTime / audio.duration * 100;
+            progressBar.value = audio.currentTime * 10000;
+            //console.log(progressBar.value / 10000);
+            progressBar.style.backgroundImage = `-webkit-linear-gradient(left,rgb(197, 7, 0) ${w}%, rgb(236, 236, 234) ${w}%)`;
+        }
+
+        //靜音功能(使用反轉布林值技巧)
+        function setMuted() {
+            audio.muted = !audio.muted;
+        }
+
+        //audio.volume = 0.1;
+
+        //用拖曳方式調整音量
+        function setVolumeByRangBar() {
+            audio.volume = rangeBar.value / 100;
+            volValue.value = rangeBar.value;
+            rangeBar.style.backgroundImage = `-webkit-linear-gradient(left,rgb(247, 133, 41) ${rangeBar.value}%, rgb(236, 236, 234) ${rangeBar.value}%)`;
+
+        }
+        //用按鈕微調音量
+        function setVolumeByButton(v) {
+            rangeBar.value = parseInt(rangeBar.value) + v;
+            setVolumeByRangBar();
+
+        }
+
+
+        //參數化
+        //音樂快轉倒轉
+        function changeTime(t) {
+            audio.currentTime += t;
+        }
+
+
+
+        var ProgressTaskID;
+        //播放音樂功能
+        function playMusic() {
+            audio.play();
+            play.innerText = ";";
+            play.onclick = pauseMusic;
+            progressBar.max = audio.duration * 10000;
+
+            ProgressTaskID = setInterval(function () {
+                getProgress();
+                getTimerForInfo();
+                getMusicStatus();
+            }, 1);
+
+            info.children[0].innerText = "現正播放:" + audio.title;
+
+
+        }
+
+
+
+
+        //暫停音樂功能
+        function pauseMusic() {
+            audio.pause();
+            play.innerText = "4";
+            play.onclick = playMusic;
+            getProgress();
+            clearInterval(ProgressTaskID);
+
+            info.children[0].innerText = "音樂暫停";
+        }
+
+        //停止音樂功能
+        function stopMusic() {
+            pauseMusic();
+            //然後把時間歸零
+            audio.currentTime = 0;
+            getProgress();
+            clearInterval(ProgressTaskID);
+
+            info.children[0].innerText = "音樂停止";
+        }
+
+
+    </script>
+</body>
+
+</html>

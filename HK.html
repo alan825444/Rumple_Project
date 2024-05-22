@@ -249,7 +249,8 @@
 
 
     function getMusicStatus() {
-        if (audio01.currentTime == audio01.duration) {
+        if (audio01.currentTime == audio01.duration) { // 判斷是否播放完畢
+                // 確認播放的模式
                 if (info.children[2].innerText == "隨機播放") {
                     //隨機選一首歌來播
                     var r = Math.floor(Math.random() * musicPool.children.length);
@@ -257,26 +258,32 @@
                     changeMusic(r);
                 }
                 else if (info.children[2].innerText == "單曲循環"){
-                    changeMusic(0-musicPool.selectedIndex);
+                    changeMusic(musicPool.selectedIndex);
                 }
-                else
-                    changeMusic(1);
+                else {
+                    if (musicPool.selectedIndex == musicPool.children.length - 1) {
+                        changeMusic(0);
+                    }  else {
+                        changeMusic(musicPool.selectedIndex + 1);
+                    }
+                }
             }
-            console.log(audio01.loop);
         }
 
 
 
     function changeMusic(idx) {
-        //console.log(musicPool.selectedIndex);
+        console.log(musicPool.selectedIndex);
+        if (idx == undefined) {
+            idx = musicPool.selectedIndex;
+        }
 
         audio01.src = musicPool.children[idx].value;
-        audio01.title=musicPool.children[musicPool.selectedIndex].innerText;
+        musicPool.selectedIndex = idx;
 
         stopMusic();
         playMusic();
 
-        // musicPool.selectedIndex = audio01.src;
 
     }
 
@@ -332,7 +339,11 @@
         playBtn.onclick = pausMusic;
         info.children[0].innerText = audio01.src.split("/").pop();
         progressBar.max = audio01.duration * 10000
-        progressTaskID = setInterval(function () { getProgress(); test(); getMusicStatus() }, 1)
+        progressTaskID = setInterval(function () { 
+            getProgress(); 
+            test(); 
+            getMusicStatus() }
+            , 1)
         // setInterval( test,900);
         // getProgress()
         // alert(audio01.currentTime);
