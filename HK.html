@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --vol-thumb-appearance: none;
+            --vol-thumb-width: 15px;
+            --vol-thumb-height: 15px;
+            --vol-thumb-background-color: rgb(0, 0, 0);
+            --vol-thumb-border-radius: 25%;
+
+            --progress-appearance: none;
+            --progress-width: 5px;
+            --progress-height: 5px;
+            --progress-background-color: rgb(103, 225, 255);
+            --progress-border-radius: 50%;
+            --progress-transition: 0.5s;
+            --progress-hover-width: 15px;
+            --progress-hover-height: 15px;
+        }
+
+        #volControllerl>input[type="range"] {
+            appearance: none;
+            width: 100%;
+            height: 5px;
+            border: 1px solid gray;
+        }
+
+        #volController>input[type="range"]::-webkit-slider-thumb {
+            appearance: var(--vol-thumb-apperance);
+            background-color: var(--vol-thumb-background-color);
+            width: var(--vol-thumb-width);
+            height: var(--vol-thumb-height);
+            border-radius: var(--vol-thumb-border-radius);
+        }
+
+        #volController>input[type="range"]::-moz-range-thumb {
+            appearance: var(--vol-thumb-apperance);
+            background-color: var(--vol-thumb-background-color);
+            width: var(--vol-thumb-width);
+            height: var(--vol-thumb-height);
+            border-radius: var(--vol-thumb-border-radius);
+        }
+
+        #controlPanel {
+            width: 1000px;
+            border: 5px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        #BtnPanel {
+            width: 600px;
+            margin: auto;
+        }
+
+        button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-family: webdings;
+            font-size: 25px;
+        }
+
+        #volController {
+            width: 300px;
+            margin-left: auto;
+        }
+
+        #volController>input[type="range"] {
+            appearance: none;
+            width: 100px;
+            height: 5px;
+            border: 1px solid gray;
+        }
+
+        #volController>input[type="range"]::-webkit-slider-thumb {
+            appearance: var(--vol-thumb-apperance);
+            background-color: var(--vol-thumb-background-color);
+            width: var(--vol-thumb-width);
+            height: var(--vol-thumb-height);
+            border-radius: var(--vol-thumb-border-radius);
+        }
+
+        #volController>input[type="range"]::-moz-range-thumb {
+            appearance: var(--vol-thumb-apperance);
+            background-color: var(--vol-thumb-background-color);
+            width: var(--vol-thumb-width);
+            height: var(--vol-thumb-height);
+            border-radius: var(--vol-thumb-border-radius);
+        }
+
+        #volController>input[type="button"] {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 15px;
+
+        }
+
+        #volController>input:last-child {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 15px;
+            font-family: webdings;
+
+        }
+
+        #volController>input[type="text"] {
+            width: 25px;
+            border: 0px;
+        }
+
+        #progressBar {
+            appearance: none;
+            width: 100%;
+            height: 5px;
+            background-color: rgb(236, 236, 234);
+        }
+
+        #progressBar::-webkit-slider-thumb {
+            appearance: var(--progress-appearance);
+            background-color: var(--progress-background-color);
+            width: var(--progress-width);
+            height: var(--progress-height);
+        }
+
+        #progressBar::-webkit-slider-thumb:hover {
+            width: var(--progress-hover-width);
+            height: var(--progress-hover-height);
+            border-radius: var(--progress-border-radius);
+            transition: var(--progress-transition);
+        }
+
+        #progressBar::-moz-range-thumb {
+            appearance: var(--progress-appearance);
+            background-color: var(--progress-background-color);
+            width: var(--progress-width);
+            height: var(--progress-height);
+        }
+
+        #progressBar::-moz-range-thumb:hover {
+            width: var(--progress-hover-width);
+            height: var(--progress-hover-height);
+            border-radius: var(--progress-border-radius);
+            transition: var(--progress-transition);
+        }
+
+        #info {
+            height: 70px;
+            line-height: 15px;
+            text-align: center;
+        }
+
+        #musicPool {
+            margin: 0 auto;
+            display: block;
+            width: 200px;
+            font-size: 16pt;
+            text-align: center;
+            background-color: rgb(184, 237, 250);
+            font-weight: 500;
+        }
+
+        .btnBColor {
+            background-color: bisque;
+        }
+    </style>
+</head>
+
+<body>
+    <audio src="mogu.mp3" id="audio01" controls title=""></audio>
+
+
+    <!-- <button id="playBtn" onclick="playMusic()">播放</button>
+    <button id="pausBtn" onclick="pausMusic()">暫停</button>
+    <button id="playpausBtn" onclick="playpausMusic()">播放/暫停</button> -->
+
+    <div id="controlPanel">
+
+        <div id="info">
+            <h1>請按下播放鈕</h1>
+            <div>00:00 / 00:00</div>
+            <div>正常</div>
+        </div>
+        <select id="musicPool" onchange="changeMusic()">
+            <option value="mogu.mp3">mogu</option>
+            <option value="travel.mp3">travel</option>
+            <option value="moon.mp3">moon</option>
+            <option value="airball.mp3">airball</option>
+            <option value="nothing.mp3">nothing</option>
+            <option value="elysees.mp3">elysees</option>
+        </select>
+        <input type="range" value="0" id="progressBar" oninput="setProgress()">
+        <hr>
+        <div id="BtnPanel">
+            <button id="prevBtn" onclick="prevMusic()">9</button>
+            <button id="prevTimeBtn" onclick="changetime(-5)">7</button>
+            <button id="playBtn" onclick="playMusic()">4</button>
+            <button id="stopBtn" onclick="stopMusic()"><</button>
+            <button id="nextTimeBtn" onclick="changetime(5)">8</button>
+            <button id="nextpBtn" onclick="nextMusic()">:</button>
+            <button id="nextpBtn" onclick="setLoop()">q</button>
+            <button id="nextpBtn" onclick="setRandom()">s</button>
+            <!-- <button id="nextpBtn" onclick="nextMusic()">`</button>
+            <button id="nextpBtn" onclick="nextMusic()">@</button> -->
+        </div>
+        <hr>
+        <div id="volController">
+            <input type="range" value="100" oninput="setVolumeByRange()">
+            <input type="text" value="100" readonly>
+            <input type="button" value="+" onclick="setVolume(1)">
+            <input type="button" value="-" onclick="setVolume(-1)">
+            <input type="button" value="V" onclick="setMuted()">
+        </div>
+    </div>
+</body>
+
+<script>
+    var audio01 = document.getElementById("audio01");
+    var musicName = ["mogu.mp3", "travel.mp3", "moon.mp3", "airball.mp3", "nothing.mp3", "elysees.mp3"];
+    var playBtn = document.getElementById("playBtn");
+    var BtnPanel = document.getElementById("BtnPanel");
+    var info = document.getElementById("info");
+    var musicPool = document.getElementById("musicPool");
+    var volController = document.getElementById("volController")
+    var progressBar = document.getElementById("progressBar")
+    var volVaiue = volController.children[1];
+    var rangeBar = volController.children[0];
+    setVolumeByRange();
+    function setRandom() {
+        event.target.className = info.children[2].innerText != "隨機播放" ? "btnBColor" : "";
+        info.children[2].innerText = info.children[2].innerText != "隨機播放" ? "隨機播放" : "正常";
+        BtnPanel.children[6].className = "";
+    }
+    function setLoop() {
+        audio01.loop = !audio01.loop;
+        event.target.className = audio01.loop ? "btnBColor" : "";
+        info.children[2].innerText = audio01.loop ? "單曲循環" : "正常";
+        BtnPanel.children[7].className = "";
+    }
+
+
+    function getMusicStatus() {
+        if (audio01.currentTime == audio01.duration) {
+                if (info.children[2].innerText == "隨機播放") {
+                    //隨機選一首歌來播
+                    var r = Math.floor(Math.random() * musicPool.children.length);
+                    r -= musicPool.selectedIndex;
+                    changeMusic(r);
+                }
+                else if (info.children[2].innerText == "單曲循環"){
+                    changeMusic(0-musicPool.selectedIndex);
+                }
+                else
+                    changeMusic(1);
+            }
+            console.log(audio01.loop);
+        }
+
+
+
+    function changeMusic() {
+        //console.log(musicPool.selectedIndex);
+
+        audio01.src = musicPool.children[musicPool.selectedIndex].value;
+        // audio01.title=musicPool.children[musicPool.selectedIndex].innerText;
+
+        stopMusic();
+        playMusic();
+
+        // musicPool.selectedIndex = audio01.src;
+
+    }
+
+
+    function setVolume(v) {
+        rangeBar.value = parseInt(volVaiue.value) + v;
+        setVolumeByRange();
+    }
+    function setVolumeByRange() {
+        audio01.volume = rangeBar.value / 100;
+        volVaiue.value = rangeBar.value;
+        rangeBar.style.backgroundImage = `-webkit-linear-gradient(left, rgb(103, 225, 255) ${rangeBar.value}%, rgb(226, 226, 226) ${rangeBar.value}%)`;
+    }
+    function setMuted() {
+        // if(audio01.muted)
+        // audio01.muted = false;
+        // else
+        // audio01.muted = true;
+        audio01.muted = !audio01.muted;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // function playMusic() {
+    //     audio01.play();
+    // }
+    // function pausMusic() {
+    //     audio01.pause();
+    // }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // function playpausMusic() {
+    //     if(audio01.paused){
+    //         audio01.play();
+    //         playpausBtn.innerText="暫停";
+    //     }else{
+    //         audio01.pause();
+    //         playpausBtn.innerText="播放";
+    //     }
+    // }
+    //////////////////////////////////////////////////////////////////////////////
+    // function prevtime(){
+    //     audio01.currentTime -= 5 ;
+    // }
+    // function nexttime(){
+    //     audio01.currentTime += 5 ;
+    // }
+    function changetime(t) {
+        audio01.currentTime += t
+    }
+    var progressTaskID
+    function playMusic() {
+        audio01.play();
+        playBtn.innerText = ";";
+        playBtn.onclick = pausMusic;
+        info.children[0].innerText = audio01.src.split("/").pop();
+        progressBar.max = audio01.duration * 10000
+        progressTaskID = setInterval(function () { getProgress(); test(); getMusicStatus() }, 1)
+        // setInterval( test,900);
+        // getProgress()
+        // alert(audio01.currentTime);
+        // console.log(audio01.currentTime);
+    }
+
+    function getTimeFormat(t) {
+
+        var m = parseInt(t / 60);
+        var s = parseInt(t) % 60;
+
+        m = m < 10 ? "0" + m : m;
+        s = s < 10 ? "0" + s : s;
+
+        return m + ":" + s;
+    }
+    function test() {
+        info.children[1].innerText = getTimeFormat(audio01.currentTime) + "/" + getTimeFormat(audio01.duration);
+        // setTimeout(test, 900);
+
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // var cTime,dTime;
+    // function test() {
+    //     cTimeM = parseInt(audio01.currentTime / 60) < 10 ? "0" + parseInt(audio01.currentTime / 60) : parseInt(audio01.currentTime / 60);
+    //     cTimeS = parseInt(audio01.currentTime) % 60 < 10 ? "0" + parseInt(audio01.currentTime) % 60 : parseInt(audio01.currentTime) % 60;
+    //     dTimeM = parseInt(audio01.duration / 60) < 10 ? "0" + parseInt(audio01.duration / 60) : parseInt(audio01.duration / 60);
+    //     dTimeS = parseInt(audio01.duration) % 60 < 10 ? "0" + parseInt(audio01.duration) % 60 : parseInt(audio01.duration) % 60;
+
+    //     info.children[2].innerText = cTimeM + ":" + cTimeS + "/" + dTimeM + ":" + dTimeS;
+    //     setTimeout(test, 900);
+    //     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function setProgress() {
+        console.log(progressBar.value)
+        audio01.currentTime = progressBar.value / 10000;
+    }
+    function getProgress() {
+        var w = audio01.currentTime / audio01.duration * 100;
+        progressBar.value = audio01.currentTime * 10000;
+        // console.log(progressBar.value); 
+        // console.log(parseInt(audio01.currentTime));
+        // setTimeout(test,500);
+        progressBar.style.backgroundImage = `-webkit-linear-gradient(left, rgb(103, 225, 255) ${w}%, rgb(226, 226, 226) ${w}%)`;
+    }
+    function pausMusic() {
+        audio01.pause();
+        playBtn.innerText = "4";
+        playBtn.onclick = playMusic;
+        clearInterval(progressTaskID);
+    }
+    function stopMusic() {
+        pausMusic();
+        audio01.currentTime = 0;
+        // progressBar.value = 0;
+        getProgress()
+        clearInterval(progressTaskID);
+    }
+
+    function nextMusic() {
+        var thisSong = audio01.src.split("/").pop();
+        for (var i = 0; i < musicName.length; i++) {
+            if (thisSong === musicName[i]) {
+                if (i === musicName.length - 1) {
+                    i = 0;
+                } else {
+                    i++;
+                }
+                audio01.src = musicName[i];
+                musicPool.children[i].selected = true;
+                console.log(audio01.src);
+                audio01.load();
+                audio01.play();
+                updateSongInfo(musicName[i]);
+                break;
+            }
+        }
+
+    }
+    function prevMusic() {
+        var thisSong = audio01.src.split("/").pop();
+        for (var i = 0; i < musicName.length; i++) {
+            if (thisSong === musicName[i]) {
+                if (i === 0) {
+                    i = musicName.length - 1;
+                } else {
+                    i--;
+                }
+                audio01.src = musicName[i];
+                musicPool.children[i].selected = true;
+                console.log(audio01.src);
+                audio01.load();
+                audio01.play();
+                updateSongInfo(musicName[i]);
+                break;
+            }
+        }
+
+    }
+    function updateSongInfo(songName) {
+        info.children[0].innerText = songName;
+    }
+
+
+
+</script>
+
+</html>
