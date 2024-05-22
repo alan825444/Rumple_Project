@@ -54,7 +54,7 @@
             margin: 0 auto;
         }
 
-        
+
         #BtnPanel {
             width: 600px;
             margin: auto;
@@ -267,10 +267,10 @@
 
 
 
-    function changeMusic() {
+    function changeMusic(idx) {
         //console.log(musicPool.selectedIndex);
 
-        audio01.src = musicPool.children[musicPool.selectedIndex].value;
+        audio01.src = musicPool.children[idx].value;
         // audio01.title=musicPool.children[musicPool.selectedIndex].innerText;
 
         stopMusic();
