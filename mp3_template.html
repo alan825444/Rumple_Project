@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="mp3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="play-list">
+
+        </div>
+        <div class="music-player">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="./media/468-thumbnail.png" class="song-image">
+            <h1>MoguMogu</h1>
+
+            <audio>
+                <source src="./airball.mp3" type="audio/mpeg">
+            </audio>
+            <div class="progressDiv">
+                <div style="margin-right: 5px;" class="btnClass"><i class="fa-solid fa-backward fa-sm"></i></div>
+                <input  style="width:75%;" type="range" value="0" id="progressBar">
+                <div style="margin-left: 5px;" class="btnClass"><i class="fa-solid fa-forward fa-sm"></i></div>
+            </div>
+
+            <div class="controls">
+                <div><i class="fa-solid fa-backward"></i></div>
+                <div><i class="fa-solid fa-backward"></i></div>
+                <div><i id="playBtn" class="fa-solid fa-play"></i></div>
+                <div><i class="fa-solid fa-forward"></i></div>
+                <div><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
